@@ -3,9 +3,9 @@ from functools import cache
 from pathlib import Path
 from typing import List
 
-from schema import Document
+from json import JSONEncoder
 
-import json
+from schema import Document
 
 
 @cache
@@ -14,7 +14,7 @@ def get_project_root() -> Path:
     return Path(stdout[0].rstrip().decode('utf-8'))
 
 
-class Serialize(json.JSONEncoder):
+class Serialize(JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Document):
             return {attr: getattr(obj, attr) for attr in obj.__slots__}

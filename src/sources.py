@@ -1,9 +1,20 @@
 from dataclasses import dataclass, field
 from typing import Dict, Any
 from pathlib import Path
+from enum import Enum
 
 from util import get_project_root
 from parsers import parsers
+
+
+class SourceNames(Enum):
+    exploit_notes = 'Exploit Notes'
+    hacktricks = 'HackTricks'
+    hacktricks_cloud = 'HackTricks Cloud'
+    heap_exploitation = 'Heap Exploitation'
+    payloadallthethings = 'PayloadsAllTheThings'
+    pwn_notes = 'ir0nstone'
+
 
 
 @dataclass(frozen=True, slots=True)
