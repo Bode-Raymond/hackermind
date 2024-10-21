@@ -1,7 +1,6 @@
-from dataclasses import dataclass, field
-from typing import List, Dict, Union
+from dataclasses import dataclass
+from typing import List, Dict
 from pathlib import Path
-from enum import Enum
 
 
 filetypes: List[str] = [
@@ -37,7 +36,7 @@ blacklist: List[str] = [
 
 @dataclass(kw_only=True, slots=True)
 class Document:
-    src: Dict[str, Union[str, Path]]
+    src: Dict[str, str | Path]
     title: List[str]
     description: List[str]
     tags: List[str]

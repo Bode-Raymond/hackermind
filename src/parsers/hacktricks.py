@@ -1,4 +1,4 @@
-from typing import Dict, Union, Self, List
+from typing import Dict, List, Any
 from urllib.parse import urljoin
 from os.path import splitext
 from pathlib import Path
@@ -6,12 +6,11 @@ from pathlib import Path
 import re
 
 from parsers.parser import Parser as BaseParser
-from util import get_project_root
 from schema import Document
 
 
 class Parser(BaseParser):
-    def parse(self, source: Dict[str, Union[str, Path, Self]]) -> List[Document]:
+    def parse(self, source: Dict[str, str | Path | Any]) -> List[Document]:
         docs = []
         files = super()._get_files(source['dat'])
 

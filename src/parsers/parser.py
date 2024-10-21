@@ -1,4 +1,4 @@
-from typing import List, Dict, Union, Self
+from typing import List, Dict, Any
 from abc import ABC, abstractmethod
 from nltk import word_tokenize
 from pathlib import Path
@@ -14,10 +14,10 @@ class Parser(ABC):
         pass
     
     @abstractmethod
-    def parse(self, source: Dict[str, Union[str, Path, Self]]) -> List[Document]:
+    def parse(self, source: Dict[str, str | Path | Any]) -> List[Document]:
         pass
 
-    def parse(self, source: Dict[str, Union[str, Path, Self]]) -> List[Document]:
+    def parse(self, source: Dict[str, str | Path | Any]) -> List[Document]:
         return []
 
     def _tokenize(self, data: str) -> List[str]:
@@ -46,14 +46,3 @@ class Parser(ABC):
 
         files = list(filter(None, map(match_file, path.glob('**/*'))))
         return files
-
-
-if __name__ == '__main__':
-    from util import get_project_root
-
-    path = get_project_root().joinpath('data/raw/pwn-notes/')
-    parser = Parser()
-
-    files = parser._get_files(path)
-    print(files)
-    parser._tokenize(files[0])

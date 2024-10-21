@@ -14,6 +14,7 @@ def parse_data():
     docs = {source: None for source in _sources.__slots__}
     for source in _sources.__slots__:
         docs[source] = getattr(_sources, source)['parser'].parse(getattr(_sources, source))
+
     with open(get_project_root().joinpath('data/docs.json'), 'w') as f:
         f.write(json.dumps(docs, cls=Serialize))
 
