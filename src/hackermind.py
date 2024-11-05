@@ -6,6 +6,7 @@ import sys
 
 from sources import SourceNames, Sources
 from util import Serialize, get_project_root
+from bm25 import BM25F
 
 
 _sources = Sources()
@@ -70,6 +71,50 @@ def analyze_data():
     plt.savefig(get_project_root().joinpath('static/avg_doc_len_by_source.png'))
 
 
+def score():
+    qs = open(get_project_root().joinpath('data/queries.txt')).read().strip().split('\n')
+    ds = json.loads(open(get_project_root().joinpath('data/docs.json')).read())
+
+    scorer = BM25F()
+    for q in qs:
+        docscores = {}
+        for s in ds.keys():
+            for d in ds[s]:
+                tfs = scorer.getDocTermFreq(d, q.split())
+                ntf = scorer.normalizeTFs(tfs, d, q.split())
+                score = scorer.score(ntf, d, q.split())
+                docscores[d['src']['url']] = score
+        docscores = {k: v for k, v in sorted(docscores.items(), key=lambda item: item[1])}
+
+        print(f'================ Query: {q} ================')
+        for i in list(docscores.keys())[-5::][::-1]:
+            print(docscores[i], i)
+        print(f'========================={"="*len(q)}================\n\n')
+
+"""
+def create_train_data():
+    qs = open(get_project_root().joinpath('data/queries.txt')).read().strip().split('\n')
+    ds = json.loads(open(get_project_root().joinpath('data/docs.json')).read())
+
+    train = {'training': []}
+    for q in qs:
+        q = q.split()
+        matching = {'query': q, 'docs': []}
+        for s in ds:
+            for d in ds[s]:
+                doc = {
+                    'url': d['url'], 
+                    'title': d['title'],
+                    'title_len': len(d['title'])
+                    'description': d['description'],
+                    'description_len': len(d['description']),
+                    'tags': len(d['tags'])
+                }
+
+        train['training'].append(matching)
+"""
+
+
 if __name__ == '__main__':
     download('punkt_tab')
     download('punkt')
@@ -81,3 +126,11 @@ if __name__ == '__main__':
         if sys.argv[1] == 'analyze':
             analyze_data()
             exit()
+        if sys.argv[1] == 'bm25':
+            score()
+            exit()
+        """
+        if sys.argv[1] == 'gentrain':
+            create_train_data()
+            exit()
+        """

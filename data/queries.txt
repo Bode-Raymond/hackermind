@@ -1,0 +1,13 @@
+cryptography cyberchef encoding
+heap exploitation
+stack exploitation
+template injection
+cross site scripting
+bash reverse shell payload
+linux privilege escalation suid
+password cracking
+ldap injection payload
+bloodhound active directory scanning
+hackthebox writeup
+aws exploitation
+powershell reverse shell
