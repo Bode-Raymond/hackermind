@@ -1,4 +1,3 @@
-from wordcloud import WordCloud
 from nltk import download
 
 import json
@@ -91,31 +90,8 @@ def score():
             print(docscores[i], i)
         print(f'========================={"="*len(q)}================\n\n')
 
-"""
-def create_train_data():
-    qs = open(get_project_root().joinpath('data/queries.txt')).read().strip().split('\n')
-    ds = json.loads(open(get_project_root().joinpath('data/docs.json')).read())
 
-    train = {'training': []}
-    for q in qs:
-        q = q.split()
-        matching = {'query': q, 'docs': []}
-        for s in ds:
-            for d in ds[s]:
-                doc = {
-                    'url': d['url'], 
-                    'title': d['title'],
-                    'title_len': len(d['title'])
-                    'description': d['description'],
-                    'description_len': len(d['description']),
-                    'tags': len(d['tags'])
-                }
-
-        train['training'].append(matching)
-"""
-
-
-if __name__ == '__main__':
+def main():
     download('punkt_tab')
     download('punkt')
 
@@ -129,8 +105,7 @@ if __name__ == '__main__':
         if sys.argv[1] == 'bm25':
             score()
             exit()
-        """
-        if sys.argv[1] == 'gentrain':
-            create_train_data()
-            exit()
-        """
+
+
+if __name__ == '__main__':
+    main()
