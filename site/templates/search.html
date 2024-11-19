@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
+    <link href="{{url_for('static', filename='output.css')}}", rel="stylesheet">
+    <title>Hacker Mind - Search</title>
+  </head>
+  <body class="bg-background relative">
+    <div id="particles-js" class="fixed h-full min-h-screen w-screen z-0">
+      <canvas class="h-screen w-screen fixed z-0"></canvas>
+    </div>
+    <div class="flex flex-col z-1 w-screen items-center justify center">
+      <div class="flex flex-row items-center justify-center h-20 pt-10">
+        <h1 class="w-96 text-5xl text-transparent text-right bg-clip-text bg-gradient-to-b from-accent-orange-primary to-accent-orange-secondary">Hacker</h1>
+        <img class="h-full mx-4" src="{{url_for('static', filename='logo.png')}}"/>
+        <h1 class="w-96 text-5xl text-transparent bg-clip-text bg-gradient-to-b from-accent-blue-primary to-accent-blue-secondary">Mind</h1>
+      </div>
+      <hr class="h-px w-full mt-8 border-0 bg-gradient-to-r from-accent-blue-secondary via-accent-blue-primary to-accent-blue-secondary">
+      <div class="flex flex-col justify-center items-center mt-10 mb-2 w-1/2">
+        <form method="POST" class="flex flex-row items-center w-full h-14 bg-white z-10 rounded-full bg-opacity-10 backdrop-blur-sm focus-within:border-2 focus-within:border-accent-orange-secondary">
+          <svg class="ml-6 w-6 h-6 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
+          <input name="query" type="text" class="block w-full h-full pl-6 pr-12 border-none rounded-full bg-transparent outline-none text-xl text-white" placeholder="Search Hacking Articles" value="{{query}}" required/>
+        </form>
+      </div>
+      {% if results|length == 0 and query|length > 0 %}
+      <div class="pt-10 font-semibold text-white text-xl z-30">
+        No Results
+      </div>
+      {% else %}
+      {% for result in results %}
+      <div class="w-1/2 bg-white bg-opacity-10 backdrop-blur-sm rounded-3xl my-2 text-white">
+        <div class="m-8">
+          <a class="flex flex-row items-center" href="{{result['url']}}">
+            <div class="flex items-center justify-center w-16 h-16">
+              <img class="rounded-full" src="{{result['favicon']}}">
+            </div>
+            <div class="flex flex-col w-full h-full ml-4">
+              {{result['source']}}<br>
+              {{result['base']}} &gt; {{result['page']}}
+            </div>
+          </a>
+          <div class="mt-4 line-clamp-4">
+            {{result['description']}}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </body>
+  <script src="{{url_for('static', filename='particles.min.js')}}"></script>
+	<script>
+    particlesJS.load('particles-js', "{{url_for('static', filename='particles.json')}}", function() {});
+  </script>
+</html>
