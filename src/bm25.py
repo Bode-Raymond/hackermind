@@ -78,11 +78,3 @@ class BM25F:
                 s += log(numDocs()/df) * (((self.k1 + 1) * ntf[w]) / self.k1 + ntf[w])
 
         return s
-
-
-
-
-
-
-
-

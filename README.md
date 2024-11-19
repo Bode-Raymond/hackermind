@@ -61,3 +61,16 @@ python src/hackermind.py bm25
 ```
 
 Note: Queries that are being tested can be found in `./data/queries.txt`. All output from the test goes to the command line.
+
+## Web App deployment
+
+1. Follow the above installation steps
+
+2. Run the following commands to start the server
+
+```
+cd site
+python app.py
+```
+
+Note: This can be set up to run as a service or in the backgroud. To modify hosting parameters, please see `site/config.py`
