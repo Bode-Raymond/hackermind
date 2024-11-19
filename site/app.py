@@ -6,9 +6,9 @@ from pathlib import Path
 import mistletoe
 import re
 
-from util import get_docs, ReadmeParser
-from schema import Sources
+from util import get_docs, ReadmeParser, tokenize
 from bm25.bm25 import BM25F
+from schema import Sources
 
 
 app = Flask(__name__)
@@ -24,16 +24,16 @@ def index():
 
 @app.route('/', methods=['POST'])
 def search():
-    q = request.form['query']
+    q = tokenize(request.form['query'])
     ds = get_docs()
 
     docscores = {}
     for s in ds.keys():
         for d in ds[s]:
-            tfs = BM25F.getDocTermFreq(d, q.split())
-            ntf = BM25F.normalizeTFs(tfs, d, q.split())
+            tfs = BM25F.getDocTermFreq(d, q)
+            ntf = BM25F.normalizeTFs(tfs, d, q)
 
-            score = BM25F.score(ntf, d, q.split())
+            score = BM25F.score(ntf, d, q)
             docscores[d['src']['dat']] = score
 
     docscores = {k: v for k, v in sorted(docscores.items(), key=lambda item: item[1])}
@@ -62,7 +62,7 @@ def search():
                 app.config['rp'].parse()
                 results[d['src']['dat']]['description'] = re.sub(r'\{%[^%]*%\}', '', re.sub(r'<[^>]*>', '', app.config['rp'].data[0]))
 
-    return render_template('search.html', query=q, results=list(results.values()))
+    return render_template('search.html', query=request.form['query'], results=list(results.values()))
 
 
 if __name__ == '__main__':

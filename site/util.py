@@ -1,8 +1,9 @@
 from subprocess import Popen, PIPE
 from html.parser import HTMLParser
+from typing import Pattern, List
+from nltk import word_tokenize
 from json import JSONEncoder
 from functools import cache
-from typing import Pattern
 from pathlib import Path
 
 import json
@@ -43,6 +44,19 @@ def numDocs():
             c += 1
 
     return c
+
+
+def tokenize(data: str) -> List[str]:
+    data = data.replace('_', ' ').replace('-', ' ').replace('.', ' ') if data else []
+    return list(
+        filter(
+            str.isalpha, 
+            map(
+                lambda s: re.sub('[^a-zA-Z0-9]', '', s), 
+                map(str.lower, word_tokenize(data))
+            )
+        )
+    ) if data else []
 
 
 class ReadmeParser(HTMLParser):
