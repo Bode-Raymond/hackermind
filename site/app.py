@@ -49,7 +49,6 @@ def search():
     for src in ds.keys():
         for d in ds[src]:
             if d['src']['dat'] in list(results.keys()):
-                print(d['src']['dat'])
                 results[d['src']['dat']]['source'] = getattr(app.config['_sources'], src)['name']
                 results[d['src']['dat']]['url'] = urljoin(
                     getattr(app.config['_sources'], src)['url'], 
@@ -62,8 +61,6 @@ def search():
                 app.config['rp'].feed(html.replace("\n", ""))
                 app.config['rp'].parse()
                 results[d['src']['dat']]['description'] = re.sub(r'\{%[^%]*%\}', '', re.sub(r'<[^>]*>', '', app.config['rp'].data[0]))
-
-    print(list(results.values()))
 
     return render_template('search.html', query=q, results=list(results.values()))
 
